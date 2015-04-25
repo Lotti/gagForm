@@ -9,6 +9,7 @@
     $form->method = 'post';
     $form->enctype = 'text/plain';
     $form->autocomplete = 'off';
+    $form->attr('novalidate', true);
 
     echo htmlentities($form->render());
     echo '</pre>';

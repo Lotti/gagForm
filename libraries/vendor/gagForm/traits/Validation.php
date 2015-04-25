@@ -2,7 +2,7 @@
 
 trait Validation {
     public static function validation_void($value) {
-        return empty($value);
+        return is_null($value) || empty($value) || $value === true || $value === false;
     }
 
     public static function validation_required($value) {
@@ -12,6 +12,10 @@ trait Validation {
     public static function validation_url($value) {
         $value = parse_url($value);
         return is_array($value) && count($value) > 0;
+    }
+
+    public static function validation_bool($value) {
+        return is_bool($value);
     }
 
     public static function validation_int($value) {
@@ -25,5 +29,10 @@ trait Validation {
     public static function validation_onoff($value) {
         $value = strtolower($value);
         return in_array($value, ['on','off']);
+    }
+
+    public static function validation_target($value) {
+        $value = strtolower($value);
+        return in_array($value, ['_self','_parent','_blank','_top'] || is_string($value));
     }
 }

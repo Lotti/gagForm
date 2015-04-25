@@ -107,12 +107,16 @@ abstract class Element {
 
     protected function printAttributes() {
         $out = [];
-        foreach($this->attributes as $k=>$v) {
-            if (!empty($v)) {
-                $out[] = $k . '="'.htmlspecialchars($v).'"';
+        foreach($this->attributes as $name=>$value) {
+            $validateMethods = self::getValidateMethods($name);
+            if (in_array('void',$validateMethods) && $value) {
+                $out[] = $name;
             }
-            else {
-                $out[] = $k;
+            else if (in_array('bool',$validateMethods)) {
+                $out[] = ($name) ? 'true' : 'false';
+            }
+            else if (!empty($value)) {
+                $out[] = $name . '="'.htmlspecialchars($value).'"';
             }
         }
         return implode(' ',$out);
@@ -163,10 +167,7 @@ abstract class Element {
 
             if ($validValue) {
                 if(isset(static::$attributesList[$name])) {
-                    $validateMethods = static::$attributesList[$name];
-                    if (!is_array($validateMethods)) {
-                        $validateMethods = explode(',', $validateMethods);
-                    }
+                    $validateMethods = self::getValidateMethods($name);
                     foreach ($validateMethods as $v) {
                         if (method_exists(get_called_class(), $validatePrefix.$v)) {
                             if (!call_user_func(array(get_called_class(), $validatePrefix.$v), $value)) {
@@ -195,6 +196,14 @@ abstract class Element {
             }
             ksort(static::$attributesList);
         }
+    }
+
+    private static function getValidateMethods($name) {
+        $validateMethods = static::$attributesList[$name];
+        if (!is_array($validateMethods)) {
+            $validateMethods = explode(',', $validateMethods);
+        }
+        return $validateMethods;
     }
 
     protected static $globalAttributes = [
