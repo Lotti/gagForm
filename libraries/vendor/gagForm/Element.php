@@ -1,19 +1,24 @@
 <?php namespace gagForm;
 
-public abstract class Element {
-
+abstract class Element {
     protected static $void = false;
     protected static $tag = 'nullTag';
     protected static $supportedAttributes = [];
     private static $attributesList = null;
 
 
-    protected $attributes = array();
+    protected $attributes = [];
+    protected $children = [];
 
     public function __construct() {
 
     }
 
+    public function __destruct() {
+
+    }
+
+    /*
     public function __call() {
 
     }
@@ -21,6 +26,7 @@ public abstract class Element {
     public static function __callStatic() {
 
     }
+    */
 
     public function __get($name) {
         if (isset($this->attributes[$name])) {
@@ -35,6 +41,10 @@ public abstract class Element {
         if (self::isValidAttribute($name)) {
             $this->attributes[$name] = $value;
         }
+    }
+
+    public function __toString() {
+        return '<'.self::$tag.' ('.count($this->attributes).') '.(self::$void ? '/': '').'>';
     }
 
     public function attr($name, $value = null) {
@@ -65,20 +75,47 @@ public abstract class Element {
         return $out;
     }
 
-    public function __toString() {
-        return '<'.self::$tag.' ('.count($this->attributes).') '.(self::$void ? '/': '').'>';
+    public function prepend(Element $element) {
+        array_unshift($this->children, $element);
+        return $this;
+    }
+
+    public function append(Element $element) {
+        array_push($this->children, $element);
+        return $this;
+    }
+
+    public function addChildren(Element $element, $order) {
+        $this->children = array_splice($this->children, $order, 0, $element);
+        return $this;
     }
 
     protected function printAttributes() {
-        return '';
+        $out = [];
+        foreach($this->attributes as $k=>$v) {
+            if (!empty($v)) {
+                $out[] = $k . '=' . $v;
+            }
+            else {
+                $out[] = $k;
+            }
+        }
+        return implode(' ',$out);
     }
 
     protected function printChildren() {
-        return '';
-    }
+        $out = [];
+        foreach($this->children as $v) {
+            $out[] = $v->render();
+        }
 
-    public function __destruct() {
-
+        if (Config::$minizeOutput) {
+            $separator = '';
+        }
+        else {
+            $separator = "\n";
+        }
+        return implode($separator,$out);
     }
 
     private static function isValidAttribute($name) {

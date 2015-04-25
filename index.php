@@ -1,4 +1,4 @@
 <?php
+    require_once(__DIR__.'/libraries/vendor/gagForm/gagForm.php');
 
-    require_once('libraries/vendor/gagForm.php');
-    use gagForm;
+    //use gagForm;
