@@ -35,8 +35,13 @@ class Form extends Element {
         return $this;
     }
 
-    public function urlencoded() {
+    public function urlEncoded() {
         $this->attributes['enctype'] = 'application/x-www-form-urlencoded';
+        return $this;
+    }
+
+    public function multipartData() {
+        $this->attributes['enctype'] = 'multipart/form-data';
         return $this;
     }
 
