@@ -4,7 +4,7 @@ abstract class Element {
     protected static $void = false;
     protected static $tag = 'nullTag';
     protected static $supportedAttributes = [];
-    private static $attributesList = null;
+    protected static $attributesList = null;
 
 
     protected $attributes = [];
@@ -29,29 +29,36 @@ abstract class Element {
     */
 
     public function __get($name) {
-        if (isset($this->attributes[$name])) {
-            return $this->attributes[$name];
+        if (self::isValidAttribute($name)) {
+            if (isset($this->attributes[$name])) {
+                return $this->attributes[$name];
+            }
         }
         else {
-            return null;
+            throw new \Exception('The element '.static::$tag.' doesn\'t support any attribute called '.$name);
         }
+        return null;
     }
 
     public function __set($name, $value) {
-        if (self::isValidAttribute($name)) {
+        if (self::isValidValue($name,$value)) {
             $this->attributes[$name] = $value;
         }
+        else {
+            throw new \Exception('The element '.static::$tag.' doesn\'t support value "'.$value.'" as value for the attribute '.$name);
+        }
+        return $this;
     }
 
     public function __toString() {
-        return '<'.self::$tag.' ('.count($this->attributes).') '.(self::$void ? '/': '').'>';
+        return htmlentities('<'.static::$tag.' ('.count($this->attributes).') '.(static::$void ? '/': '').'>');
     }
 
     public function attr($name, $value = null) {
         $args = func_num_args();
         switch($args) {
             default:
-                throw new BadMethodCallException('This method support only with a specific amount of parameters. With one parameter it will operate as a getter, with two as a setter');
+                throw new \BadMethodCallException('This method support only with a specific amount of parameters. With one parameter it will operate as a getter, with two as a setter');
             break;
             case 1:
                 return $this->__get($name);
@@ -64,13 +71,19 @@ abstract class Element {
     }
 
     public function render() {
-        $out = '<'.self::$tag.' '.$this->printAttributes();
-        if (self::$void) {
+        $out = '<'.static::$tag;
+        $attributes = $this->printAttributes();
+        if (!empty($attributes)) {
+            $out.=' '.$attributes;
+        }
+        
+        if (static::$void) {
             $out.='/>';
         }
         else {
+            $out.='>';
             $out.=$this->printChildren();
-            $out.='</'.self::$tag.'>';
+            $out.='</'.static::$tag.'>';
         }
         return $out;
     }
@@ -94,7 +107,7 @@ abstract class Element {
         $out = [];
         foreach($this->attributes as $k=>$v) {
             if (!empty($v)) {
-                $out[] = $k . '=' . $v;
+                $out[] = $k . '="'.htmlspecialchars($v).'"';
             }
             else {
                 $out[] = $k;
@@ -119,38 +132,96 @@ abstract class Element {
     }
 
     private static function isValidAttribute($name) {
-        if (self::$attributesList == null) {
-            self::$attributesList = array_merge(self::$globalAttributes, self::$supportedAttributes);
+        self::prepareAttributesList();
+        if (isset(static::$attributesList[$name])) {
+            return true;
+        }
+        else {
+            foreach (static::$attributesList as $k => $v) {
+                if (strpos($k, '*') !== false && preg_match('/' . str_replace('*', '.*', $k) . '/', $name)) {
+                    return true;
+                }
+            }
         }
 
-        foreach(self::$attributesList as $k=>$v) {
-            if ($k == $name) {
-                return true;
-            }
-            else if (strpos($k,'*') !== false && preg_match('/'.str_replace('*','.*',$k).'/', $name)) {
-                return true;
-            }
-        }
-
+        throw new \Exception(static::$tag." doesn't support an attribute called ".$name);
         return false;
+    }
+
+    private static function isValidValue($name, $value) {
+        self::prepareAttributesList();
+        $validateClassName = '\Validation';
+        $validateParameter = 'validate';
+
+        if (self::isValidAttribute($name)) {
+            $validValue = true;
+
+            if (method_exists(get_called_class(), $name)) {
+                $validValue = call_user_func(array(get_called_class(), $name), $value);
+            }
+
+            if ($validValue) {
+                if(isset(static::$attributesList[$name][$validateParameter])) {
+                    $validateMethods = static::$attributesList[$name][$validateParameter];
+                    if (!is_array($validateMethods)) {
+                        $validateMethods = explode(',', $validateMethods);
+                    }
+                    foreach ($validateMethods as $v) {
+                        if (method_exists(get_called_class(), $v)) {
+                            if (!call_user_func(array(get_called_class(), $v), $value)) {
+                                $validValue = false;
+                                break;
+                            }
+                        } else if (method_exists(__NAMESPACE__ . $validateClassName, $v)) {
+                            if (!call_user_func(array(__NAMESPACE__ . $validateClassName, $v), $value)) {
+                                $validValue = false;
+                                break;
+                            }
+                        } else {
+                            throw new \Exception('Error on ' . get_called_class() . ': attribute ' . $name . ' uses a validation method "' . $v . '" that doesn\'t exist!');
+                            $validValue = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            return $validValue;
+        }
+        return false;
+    }
+
+    private static function prepareAttributesList() {
+        if (static::$attributesList == null) {
+            static::$attributesList = self::$globalAttributes;
+            foreach(static::$supportedAttributes as $k=>$v) {
+                static::$attributesList[$k] = $v;
+            }
+            ksort(static::$attributesList);
+        }
     }
 
     protected static $globalAttributes = [
         'accesskey'=>[],
-        'class'=>[],
+        'class'=>[], //core attribute
         'contenteditable'=>[],
         'contextmenu'=>[],
         'data-*'=>[],
-        'dir'=>[],
+        'dir'=>[], //i18n attribute
         'draggable'=>[],
         'dropzone'=>[],
         'hidden'=>[],
-        'id'=>[],
-        'lang'=>[],
-        'on*'=>[],
+        'id'=>[], //core attribute
+        'itemid'=>[],
+        'itemprop'=>[],
+        'itemref'=>[],
+        'itemscope'=>[],
+        'itemtype'=>[],
+        'lang'=>[], //i18n attribute
+        'on*'=>[], //events attribute
         'spellcheck'=>[],
-        'style'=>[],
+        'style'=>[], //core attribute
         'tabindex'=>[],
-        'title'=>[],
+        'title'=>[], //core attribute
+        'translate'=>[],
     ];
 }
