@@ -1,6 +1,8 @@
 <?php namespace gagForm;
 
 abstract class Element {
+    use Validation;
+
     protected static $void = false;
     protected static $tag = 'nullTag';
     protected static $supportedAttributes = [];
@@ -150,34 +152,29 @@ abstract class Element {
 
     private static function isValidValue($name, $value) {
         self::prepareAttributesList();
-        $validateClassName = '\Validation';
-        $validateParameter = 'validate';
+        $validatePrefix = 'validation_';
 
         if (self::isValidAttribute($name)) {
             $validValue = true;
 
-            if (method_exists(get_called_class(), $name)) {
-                $validValue = call_user_func(array(get_called_class(), $name), $value);
+            if (method_exists(get_called_class(), $validatePrefix.$name)) {
+                $validValue = call_user_func(array(get_called_class(), $validatePrefix.$name), $value);
             }
 
             if ($validValue) {
-                if(isset(static::$attributesList[$name][$validateParameter])) {
-                    $validateMethods = static::$attributesList[$name][$validateParameter];
+                if(isset(static::$attributesList[$name])) {
+                    $validateMethods = static::$attributesList[$name];
                     if (!is_array($validateMethods)) {
                         $validateMethods = explode(',', $validateMethods);
                     }
                     foreach ($validateMethods as $v) {
-                        if (method_exists(get_called_class(), $v)) {
-                            if (!call_user_func(array(get_called_class(), $v), $value)) {
+                        if (method_exists(get_called_class(), $validatePrefix.$v)) {
+                            if (!call_user_func(array(get_called_class(), $validatePrefix.$v), $value)) {
                                 $validValue = false;
                                 break;
                             }
-                        } else if (method_exists(__NAMESPACE__ . $validateClassName, $v)) {
-                            if (!call_user_func(array(__NAMESPACE__ . $validateClassName, $v), $value)) {
-                                $validValue = false;
-                                break;
-                            }
-                        } else {
+                        }
+                        else {
                             throw new \Exception('Error on ' . get_called_class() . ': attribute ' . $name . ' uses a validation method "' . $v . '" that doesn\'t exist!');
                             $validValue = false;
                             break;
