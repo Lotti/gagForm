@@ -1,45 +1,111 @@
 <?php namespace gagForm;
 
+/**
+ * Trait Validation
+ * Validation is a collection of method defined as a trait, that every element class inherits.
+ *
+ * @package gagForm
+ */
 trait Validation {
+    /**
+     * Checks if passed value is null, empty or a boolean. Used for empty element's attributes.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_void($value) {
         return is_null($value) || empty($value) || $value === true || $value === false;
     }
 
+    /**
+     * Checks if passed value is required. It must not be empty.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_required($value) {
-        return !empty($value);
+        return !empty($value) && $value !== 0;
     }
 
+    /**
+     * Checks if passed value is an url (or a part of it).
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_url($value) {
         $value = parse_url($value);
         return is_array($value) && count($value) > 0;
     }
 
+    /**
+     * Checks if passed value is a boolean.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_bool($value) {
         return is_bool($value);
     }
 
+    /**
+     * Checks if passed value is an integer.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_int($value) {
         return is_int($value);
     }
 
+    /**
+     * Checks if passed value is a string.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_string($value) {
         return is_string($value);
     }
 
+    /**
+     * Checks if passed value is a value between "on" or "off".
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_onoff($value) {
         $value = strtolower($value);
         return in_array($value, ['on','off']);
     }
 
+    /**
+     * Checks if passed value is a value between "_self", "_parent", "_blank", "_top" or any string.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_target($value) {
         $value = strtolower($value);
-        return in_array($value, ['_self','_parent','_blank','_top'] || is_string($value));
+        return in_array($value, ['_self','_parent','_blank','_top'] || (is_string($value) && !empty($value)));
     }
 
+    /**
+     * Checks if passed value is a single char.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_char($value) {
         return is_string($value) && strlen($value) == 1;
     }
 
+    /**
+     * Checks if passed value is an array.
+     *
+     * @param mixed $value a value to be validated
+     * @return bool
+     */
     protected static function validation_array($value) {
         return is_array($value);
     }
