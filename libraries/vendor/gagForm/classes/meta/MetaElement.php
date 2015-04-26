@@ -34,12 +34,18 @@ abstract class MetaElement {
     ];
     protected static $supportedElements = [];
 
+    public static function create(array $args = []) {
+        $class = new static();
+        $class->load($args);
+        return $class;
+    }
+
     protected static function appendTo(MetaElement $parent, array $args = []) {
-        $parent->append(new static($args));
+        $parent->append(self::create($args));
     }
 
     protected static function prependTo(MetaElement $parent, array $args = []) {
-        $parent->prepend(new static($args));
+        $parent->prepend(self::create($args));
     }
 
     private static function isValidChild($value) {
@@ -128,7 +134,9 @@ abstract class MetaElement {
     protected $attributes = [];
     protected $children = [];
 
-    public function __construct(array $args = []) {
+    private function __construct() {}
+
+    private function load(array $args = []) {
         $this->setAttributes($args);
     }
 
@@ -190,7 +198,16 @@ abstract class MetaElement {
         }
         else {
             $out.='>';
-            $out.=$this->printChildren();
+            $children = $this->printChildren();
+            if (!empty($children)) {
+                if (!Config::$minizeOutput) {
+                    $out .= "\n";
+                }
+                $out .= $this->printChildren();
+                if (!Config::$minizeOutput) {
+                    $out .= "\n";
+                }
+            }
             $out.='</'.static::$tag.'>';
         }
         return $out;
@@ -235,7 +252,12 @@ abstract class MetaElement {
     protected function printChildren() {
         $out = [];
         foreach($this->children as $v) {
-            $out[] = $v->render();
+            if ($v instanceof MetaElement) {
+                $out[] = $v->render();
+            }
+            else {
+                $out[] = $v;
+            }
         }
 
         if (Config::$minizeOutput) {

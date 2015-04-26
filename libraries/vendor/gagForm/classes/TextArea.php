@@ -18,7 +18,7 @@ class TextArea extends VoidElement {
 
     public function render() {
         $this->children = [];
-        $this->children[0] = new Text(['value'=>$this->attributes['value']]);
+        $this->children[0] = Text::create($this->attributes['value']);
         return parent::render();
     }
 }

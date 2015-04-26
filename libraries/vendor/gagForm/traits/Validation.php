@@ -39,4 +39,8 @@ trait Validation {
     protected static function validation_char($value) {
         return is_string($value) && strlen($value) == 1;
     }
+
+    protected static function validation_array($value) {
+        return is_array($value);
+    }
 }

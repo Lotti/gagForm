@@ -7,6 +7,14 @@ class Text extends VoidElement {
         'value'=>[],
     ];
 
+    public static function create($text, $isHtml = false) {
+        $args = ['value' => $text ];
+        if ($isHtml) {
+            $args['html'] = true;
+        }
+        return parent::create($args);
+    }
+
     public function __toString() {
         return 'Text ('.strlen($this->content).')';
     }
