@@ -13,11 +13,11 @@ class Button extends Element {
         'tabindex'=>['int'],
     ];
 
-    public static function create($value, array $args = []) {
-        if (!isset($args['type'])) {
-            $args['type'] = 'button';
+    public static function create($value, $type = 'button', array $args = []) {
+        $args['type'] = $type;
+        if ($value instanceof CData) {
+            $value = $value->render();
         }
-
         $args['value'] = $value;
 
         return parent::create($args);

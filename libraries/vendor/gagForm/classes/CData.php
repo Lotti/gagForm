@@ -1,6 +1,6 @@
 <?php namespace gagForm;
 
-class Text extends VoidElement {
+class CData extends VoidElement {
     protected static $attributesList = null;
     protected static $supportedAttributes = [
         'html'=>['bool'],
@@ -19,11 +19,11 @@ class Text extends VoidElement {
         return 'Text ('.strlen($this->content).')';
     }
 
-    public function append(Text $text) {
+    public function append(CData $text) {
         $this->attributes['value'].= $text->attr('value');
     }
 
-    public function prepend(Text $text) {
+    public function prepend(CData $text) {
         $this->attributes['value'] = $text->attr('value').$this->attributes['value'];
     }
 

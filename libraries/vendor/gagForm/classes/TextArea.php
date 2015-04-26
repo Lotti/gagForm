@@ -10,15 +10,24 @@ class TextArea extends VoidElement {
         'rows'=>['int'],
         'cols'=>['int'],
         'name' => [],
-        'value'=> [],
+        'value' => [],
         'readonly'=>['void'],
         'disabled'=>['void'],
         'tabindex'=>['int'],
     ];
 
+    public static function create($text, array $args = []) {
+        if ($text instanceof CData) {
+            $text = $text->render();
+        }
+        $args['value'] = $text;
+        return parent::create($args);
+    }
+
+
     public function render() {
         $this->children = [];
-        $this->children[0] = Text::create($this->attributes['value']);
+        $this->children[0] = CData::create($this->attributes['value']);
         return parent::render();
     }
 }
