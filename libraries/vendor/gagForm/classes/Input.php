@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class Input extends VoidElement {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $tag = 'input';
     protected static $supportedAttributes = [
         'accesskey'=>['char'],

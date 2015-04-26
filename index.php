@@ -4,7 +4,7 @@ define('__DEBUG__', false);
 
 require_once(__DIR__.'/libraries/vendor/gagForm/gagForm.php');
 
-\gagForm\Config::$minizeOutput = false;
+\gagForm\Config::$minizeOutput = !__DEBUG__;
 
 $form = \gagForm\Form::create('get', '/collectData.php');
 

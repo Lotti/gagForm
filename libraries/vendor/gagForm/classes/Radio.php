@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class Radio extends Input {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $tag = 'input';
 
     public static function create($checked, array $args = []) {

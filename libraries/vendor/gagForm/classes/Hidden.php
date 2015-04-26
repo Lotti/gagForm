@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class Hidden extends Input {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $tag = 'input';
 
     public static function create($value, array $args = []) {

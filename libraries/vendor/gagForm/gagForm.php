@@ -1,8 +1,21 @@
 <?php namespace gagForm;
 
+/**
+ * Class Config
+ * This class holds all the configuration of the package.
+ *
+ * @package gagForm
+ */
 class Config {
+    /**
+     * Minimize the output
+     *
+     * @var bool
+     */
     public static $minizeOutput = true;
 }
+
+//maybe an autoload was needed here...
 require_once(__DIR__ . '/traits/Validation.php');
 require_once(__DIR__ . '/classes/meta/MetaElement.php');
 require_once(__DIR__ . '/classes/meta/CommonElement.php');

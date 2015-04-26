@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class Button extends Element {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $tag = 'button';
     protected static $hiddenAttributes = ['value'];
     protected static $supportedAttributes = [

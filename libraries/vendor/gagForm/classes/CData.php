@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class CData extends VoidElement {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $supportedAttributes = [
         'html'=>['bool'],
         'value'=>[],

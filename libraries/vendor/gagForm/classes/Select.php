@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class Select extends VoidElement {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $void = false;
     protected static $tag = 'select';
     protected static $hiddenAttributes = ['value','options'];

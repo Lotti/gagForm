@@ -1,7 +1,7 @@
 <?php namespace gagForm;
 
 class TextArea extends VoidElement {
-    protected static $attributesList = null;
+    protected static $attributesList = [];
     protected static $void = false;
     protected static $tag = 'textarea';
     protected static $hiddenAttributes = ['value'];

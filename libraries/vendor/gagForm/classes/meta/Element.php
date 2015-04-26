@@ -1,14 +1,44 @@
 <?php namespace gagForm;
 
+/**
+ * Class Element
+ *
+ * Abstract class that element must extended.
+ * It change visibility to some methods of MetaElement class.
+ *
+ * @package gagForm
+ */
 abstract class Element extends CommonElement {
+    /**
+     * Wrapper of parent method. It justs change his visibility.
+     *
+     * @param MetaElement $element
+     * @return $this
+     * @see MetaElement::prepend
+     */
     public function prepend(MetaElement $element) {
         return parent::prepend($element);
     }
 
+    /**
+     * Wrapper of parent method. It justs change his visibility.
+     *
+     * @param MetaElement $element
+     * @return $this
+     * @see MetaElement::append
+     */
     public function append(MetaElement $element) {
         return parent::append($element);
     }
 
+    /**
+     * Wrapper of parent method. It justs change his visibility.
+     *
+     * @param MetaElement $element
+     * @param int $order
+     * @return $this
+     * @see MetaElement::addChildren
+     */
     public function addChildren(MetaElement $element, $order) {
         return parent::addChildren($element, $order);
     }
