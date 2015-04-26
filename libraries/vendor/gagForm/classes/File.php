@@ -3,7 +3,7 @@
 /**
  * Class File
  *
- * Represents File element
+ * Represents InputFile element
  *
  * @package gagForm
  */

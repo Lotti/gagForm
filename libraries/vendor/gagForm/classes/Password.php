@@ -1,8 +1,23 @@
 <?php namespace gagForm;
 
+/**
+ * Class Password
+ *
+ * Represents InputPassword element
+ *
+ * @package gagForm
+ */
 class Password extends Input {
     protected static $attributesList = [];
 
+    /**
+     * Specialized constructor that permits the initialization the initialization of the element.
+     *
+     * @param string $value attribute value's value
+     * @param array $args other attributes values
+     * @return Password
+     * @see MetaElement::create
+     */
     public static function create($value, array $args = []) {
         $args['type'] = 'password';
         $args['value'] = $value;

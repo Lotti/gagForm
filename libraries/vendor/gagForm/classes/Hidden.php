@@ -3,7 +3,7 @@
 /**
  * Class Hidden
  *
- * Represents Hidden element
+ * Represents InputHidden element
  *
  * @package gagForm
  */

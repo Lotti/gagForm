@@ -3,7 +3,7 @@
 /**
  * Class Checkbox
  *
- * Represents Checkbox element
+ * Represents InputCheckbox element
  *
  * @package gagForm
  */
@@ -13,7 +13,7 @@ class Checkbox extends Input {
     /**
      * Specialized constructor that permits the initialization the initialization of the element.
      *
-     * @param boolean $checked value of the checked attribute
+     * @param bool $checked value of the checked attribute
      * @param array $args other attributes values
      * @return Checkbox
      * @see MetaElement::create

@@ -1,8 +1,23 @@
 <?php namespace gagForm;
 
+/**
+ * Class Submit
+ *
+ * Represents InputSubmit element
+ *
+ * @package gagForm
+ */
 class Submit extends Input {
     protected static $attributesList = [];
 
+    /**
+     * Specialized constructor that permits the initialization the initialization of the element.
+     *
+     * @param string $value attribute value's value
+     * @param array $args other attributes values
+     * @return Submit
+     * @see MetaElement::create
+     */
     public static function create($value, array $args = []) {
         $args['type'] = 'submit';
         $args['value'] = $value;

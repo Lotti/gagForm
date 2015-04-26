@@ -20,6 +20,7 @@ class CData extends VoidElement {
      * @param string $text
      * @param bool $isHtml
      * @return CData
+     * @see MetaElement::create
      */
     public static function create($text, $isHtml = false) {
         $args = ['value' => $text ];

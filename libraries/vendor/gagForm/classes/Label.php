@@ -1,5 +1,12 @@
 <?php namespace gagForm;
 
+/**
+ * Class Label
+ *
+ * Represents Label element
+ *
+ * @package gagForm
+ */
 class Label extends Element {
     protected static $attributesList = [];
     protected static $tag = 'label';
@@ -14,6 +21,7 @@ class Label extends Element {
      * @param MetaElement $element
      * @param array $args other attributes values
      * @return Label
+     * @see MetaElement::create
      */
     public static function create(MetaElement $element, array $args = []) {
         $object = parent::create($args);

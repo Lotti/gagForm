@@ -28,6 +28,7 @@ class Form extends Element {
      * @param string $action the form action value
      * @param array $args other attributes values
      * @return Form
+     * @see MetaElement::create
      */
     public static function create($method, $action, array $args = []) {
         $args['method'] = $method;
@@ -100,7 +101,7 @@ class Form extends Element {
     /**
      * Sets the autocomplete attribute
      *
-     * @param boolean $value
+     * @param bool $value
      * @return $this
      */
     public function autocomplete($value) {
