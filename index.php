@@ -1,10 +1,12 @@
 <?php
+
+define('__DEBUG__', false);
+
 require_once(__DIR__.'/libraries/vendor/gagForm/gagForm.php');
 
 gagForm\Config::$minizeOutput = false;
 
-echo '<pre>';
-$form = \gagForm\Form::create(['action'=>'/collectData.php']);
+$form = \gagForm\Form::create('get', '/collectData.php');
 
 $form->enctype = 'text/plain';
 $form->autocomplete(false);
@@ -14,7 +16,7 @@ $form->attr('method','post')->attr('novalidate', true);
 $text = \gagForm\CData::create(['value'=>'this is a text']);
 $input = \gagForm\Input::create();
 $form->append($input);
-\gagForm\TextArea::appendTo($form, ['value'=>'textarea text', 'rows'=>15, 'cols'=>30]);
+\gagForm\TextArea::appendTo($form, ['value'=>'textarea text', 'rows'=>5, 'cols'=>45]);
 \gagForm\Select::appendTo($form, ['name'=>'selectedValue','options'=>[1=>'uno', 2=>'due', 3=>'tre'], 'value'=>1]);
 
 $button = \gagForm\Button::create('ciao');
@@ -33,5 +35,9 @@ $form->append(\gagForm\File::create(['name'=>'file']));
 $form->append(\gagForm\Submit::create('Invia il form', ['name'=>'submit']));
 $form->append(\gagForm\Reset::create('Resetta il form', ['name'=>'reset']));
 
-echo htmlentities($form->render());
-echo '</pre>';
+if (__DEBUG__) {
+    echo '<pre>'.htmlspecialchars($form->render()).'</pre>';
+}
+else {
+    echo $form->render();
+}
