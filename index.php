@@ -19,8 +19,7 @@ $form->append($input);
 \gagForm\TextArea::appendTo($form, ['value'=>'textarea text', 'rows'=>5, 'cols'=>45]);
 \gagForm\Select::appendTo($form, ['name'=>'selectedValue','options'=>[1=>'uno', 2=>'due', 3=>'tre'], 'value'=>1]);
 
-$button = \gagForm\Button::create('ciao');
-$button->append(\gagForm\CData::create('sono un bottone'));
+$button = \gagForm\Button::create(\gagForm\CData::create('sono un bottone'));
 $form->append($button);
 
 $form->append(\gagForm\Select::create([1=>1,2=>2,3=>3], 3, ['name'=>'select2']));

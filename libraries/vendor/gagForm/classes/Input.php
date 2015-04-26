@@ -1,5 +1,12 @@
 <?php namespace gagForm;
 
+/**
+ * Class Input
+ *
+ * Represents Input element
+ *
+ * @package gagForm
+ */
 class Input extends VoidElement {
     protected static $attributesList = [];
     protected static $tag = 'input';

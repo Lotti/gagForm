@@ -1,8 +1,22 @@
 <?php namespace gagForm;
 
+/**
+ * Class File
+ *
+ * Represents File element
+ *
+ * @package gagForm
+ */
 class File extends Input {
     protected static $attributesList = [];
 
+    /**
+     * Specialized constructor that permits the initialization the initialization of the element.
+     *
+     * @param array $args other attributes values
+     * @return File
+     * @see MetaElement::create
+     */
     public static function create(array $args = []) {
         $args['type'] = 'file';
         return parent::create($args);

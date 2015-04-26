@@ -1,26 +1,36 @@
 <?php namespace gagForm;
 
+/**
+ * Class Button
+ *
+ * Represents Button element
+ *
+ * @package gagForm
+ */
 class Button extends Element {
     protected static $attributesList = [];
     protected static $tag = 'button';
-    protected static $hiddenAttributes = ['value'];
     protected static $supportedAttributes = [
         'accesskey'=>['char'],
         'type'=>['required'],
         'name' => [],
-        'value'=> [],
         'disabled'=>['void'],
         'tabindex'=>['int'],
     ];
 
-    public static function create($value, $type = 'button', array $args = []) {
+    /**
+     * Specialized constructor that permits the initialization the initialization of the element.
+     *
+     * @param MetaElement $element
+     * @param string $type value of attribute type
+     * @param array $args other attributes values
+     * @return Button
+     * @see MetaElement::create
+     */
+    public static function create(MetaElement $element, $type = 'button', array $args = []) {
         $args['type'] = $type;
-        if ($value instanceof CData) {
-            $value = $value->render();
-        }
-        $args['value'] = $value;
-
-        return parent::create($args);
+        $object = parent::create($args);
+        return $object->append($element);
     }
 
     /**

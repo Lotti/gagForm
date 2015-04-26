@@ -76,7 +76,7 @@ abstract class MetaElement {
     protected static $supportedElements = [];
 
     /**
-     * A generic constructors that permits the initialization of
+     * A generic constructor that permits the initialization of
      * element with an array of attributes.
      *
      * @param array $args

@@ -1,8 +1,23 @@
 <?php namespace gagForm;
 
+/**
+ * Class Checkbox
+ *
+ * Represents Checkbox element
+ *
+ * @package gagForm
+ */
 class Checkbox extends Input {
     protected static $attributesList = [];
 
+    /**
+     * Specialized constructor that permits the initialization the initialization of the element.
+     *
+     * @param boolean $checked value of the checked attribute
+     * @param array $args other attributes values
+     * @return Checkbox
+     * @see MetaElement::create
+     */
     public static function create($checked, array $args = []) {
         $args['type'] = 'checkbox';
         $args['checked'] = $checked;

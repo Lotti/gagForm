@@ -1,8 +1,23 @@
 <?php namespace gagForm;
 
+/**
+ * Class Hidden
+ *
+ * Represents Hidden element
+ *
+ * @package gagForm
+ */
 class Hidden extends Input {
     protected static $attributesList = [];
 
+    /**
+     * Specialized constructor that permits the initialization the initialization of the element.
+     *
+     * @param string $value attribute value's value
+     * @param array $args other attributes values
+     * @return Hidden
+     * @see MetaElement::create
+     */
     public static function create($value, array $args = []) {
         $args['type'] = 'hidden';
         $args['value'] = $value;
