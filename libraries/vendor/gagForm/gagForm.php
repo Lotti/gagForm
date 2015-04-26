@@ -20,5 +20,6 @@ require_once(__DIR__ . '/classes/Hidden.php');
 require_once(__DIR__ . '/classes/Password.php');
 require_once(__DIR__ . '/classes/Submit.php');
 require_once(__DIR__ . '/classes/Reset.php');
-//require_once(__DIR__ . '/classes/Text.php');
+require_once(__DIR__ . '/classes/Text.php');
+require_once(__DIR__ . '/classes/Label.php');
 require_once(__DIR__ . '/classes/CData.php');

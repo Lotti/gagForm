@@ -14,6 +14,12 @@ class Form extends Element {
         'target'=>[],
     ];
 
+    public static function create($method, $action, array $args = []) {
+        $args['method'] = $method;
+        $args['action'] = $action;
+        return parent::create($args);
+    }
+
     protected static function validation_method($value) {
         $value = strtolower($value);
         return in_array($value, ['get','post']);

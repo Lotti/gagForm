@@ -27,6 +27,7 @@ $form->append(\gagForm\Checkbox::create(true, ['name'=>'checkbox1']));
 $form->append(\gagForm\Radio::create(true, ['name'=>'radio']));
 $form->append(\gagForm\Radio::create(false, ['name'=>'radio']));
 $form->append(\gagForm\Hidden::create('123', ['name'=>'id']));
+$form->append(\gagForm\Text::create('username', ['name'=>'username']));
 $form->append(\gagForm\Password::create('password', ['name'=>'password']));
 $form->append(\gagForm\File::create(['name'=>'file']));
 $form->append(\gagForm\Submit::create('Invia il form', ['name'=>'submit']));
