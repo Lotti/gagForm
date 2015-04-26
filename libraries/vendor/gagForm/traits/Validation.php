@@ -35,4 +35,8 @@ trait Validation {
         $value = strtolower($value);
         return in_array($value, ['_self','_parent','_blank','_top'] || is_string($value));
     }
+
+    protected static function validation_char($value) {
+        return is_string($value) && strlen($value) == 1;
+    }
 }

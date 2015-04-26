@@ -5,6 +5,7 @@ abstract class MetaElement {
 
     protected static $void = false;
     protected static $tag = 'nullTag';
+    protected static $hiddenAttributes = [];
     protected static $supportedAttributes = [];
     protected static $attributesList = null;
     protected static $globalAttributes = [
@@ -144,7 +145,6 @@ abstract class MetaElement {
         if (self::isValidValue($name,$value)) {
             $this->attributes[$name] = $value;
         }
-        return $this;
     }
 
     public function __toString() {
@@ -163,19 +163,19 @@ abstract class MetaElement {
     }
 
     protected function attr($name, $value = null) {
-        $args = func_num_args();
-        switch($args) {
-            default:
-                throw new \BadMethodCallException('This method support only with a specific amount of parameters. With one parameter it will operate as a getter, with two as a setter');
-            break;
-            case 1:
-                return $this->__get($name);
-            break;
-            case 2:
-                $this->__set($name, $value);
-            break;
+        if (is_null($value)) {
+            return $this->__get($name);
+        }
+        else {
+            $this->__set($name, $value);
         }
         return $this;
+    }
+
+    protected function removeAttr($name) {
+        if (self::isValidAttribute($name)) {
+            unset($this->attributes[$name]);
+        }
     }
 
     public function render() {
@@ -218,15 +218,15 @@ abstract class MetaElement {
     protected function printAttributes() {
         $out = [];
         foreach($this->attributes as $name=>$value) {
-            $validateMethods = self::getValidateMethods($name);
-            if (in_array('void',$validateMethods) && $value) {
-                $out[] = $name;
-            }
-            else if (in_array('bool',$validateMethods)) {
-                $out[] = ($name) ? 'true' : 'false';
-            }
-            else if (!empty($value)) {
-                $out[] = $name . '="'.htmlspecialchars($value).'"';
+            if (!in_array($name, static::$hiddenAttributes)) {
+                $validateMethods = self::getValidateMethods($name);
+                if (in_array('void', $validateMethods) && $value) {
+                    $out[] = $name;
+                } else if (in_array('bool', $validateMethods)) {
+                    $out[] = ($name) ? 'true' : 'false';
+                } else if (!empty($value)) {
+                    $out[] = $name . '="' . htmlspecialchars($value) . '"';
+                }
             }
         }
         return implode(' ',$out);

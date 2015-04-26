@@ -13,11 +13,15 @@ abstract class CommonElement extends MetaElement {
         return parent::attr($name, $value);
     }
 
-    protected function setAttributes(array $args) {
+    public function removeAttr($name) {
+        return parent::removeAttr($name);
+    }
+
+    public function setAttributes(array $args) {
         return parent::setAttributes($args);
     }
 
-    protected function getAttributes() {
+    public function getAttributes() {
         return parent::getAttributes();
     }
 }

@@ -1,6 +1,7 @@
 <?php namespace gagForm;
 
 class Form extends Element {
+    protected static $attributesList = null;
     protected static $tag = 'form';
     protected static $supportedAttributes = [
         'accept-charset'=>[],
@@ -10,8 +11,6 @@ class Form extends Element {
         'method'=>[],
         'name' => [],
         'novalidate'=>['void'],
-        'onsubmit'=>[],
-        'onreset'=>[],
         'target'=>[],
     ];
 
