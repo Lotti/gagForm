@@ -7,4 +7,10 @@ class Label extends Element {
         'for'=>[],
         'accesskey'=>['char'],
     ];
+
+    public static function create(MetaElement $element, array $args = []) {
+        $object = parent::create($args);
+        $object->append($element);
+        return $object;
+    }
 }

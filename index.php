@@ -25,7 +25,7 @@ $form->append($button);
 
 $form->append(\gagForm\Select::create([1=>1,2=>2,3=>3], 3, ['name'=>'select2']));
 
-$form->append(\gagForm\Checkbox::create(true, ['name'=>'checkbox1']));
+$form->append(\gagForm\Label::create(\gagForm\Checkbox::create(true, ['id'=>'checkbox1']), ['for'=>'checkbox1'])->prepend(\gagForm\CData::create('label checkbox')));
 $form->append(\gagForm\Radio::create(true, ['name'=>'radio']));
 $form->append(\gagForm\Radio::create(false, ['name'=>'radio']));
 $form->append(\gagForm\Hidden::create('123', ['name'=>'id']));
